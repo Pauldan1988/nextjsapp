@@ -41,7 +41,8 @@ export function TodoItem({ id, title, complete, toggleTodo }: TodoItemProps) {
         >
             {title}
         </label>
-        {checked ? <button onClick={() => deleteTodo(id)}>Delete</button> : null}
+        {checked ? 
+        <button onClick={() => deleteTodo(id)}>Delete</button> : null}
 
     </li>
 }
