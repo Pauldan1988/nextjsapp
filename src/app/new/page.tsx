@@ -2,7 +2,7 @@ import Link from "next/link";
 import { prisma } from "@/db";
 import { redirect } from "next/navigation";
 
-//*This function can only run on the server side. It is taking in the ormData as a parameter
+//*This function can only run on the server side. It is taking in the FormData as a parameter
 async function createTodo(data: FormData) {
     "use server"
 
@@ -11,7 +11,7 @@ async function createTodo(data: FormData) {
     if (typeof title !== "string" || title.length === 0) {
         throw new Error("Invalid Title")
     }
-//*Creating the todo item using data rom FormData and setting the default value to alse and then redirecting to the home page
+//*Creating the todo item using data from FormData and setting the default value to false and then redirecting to the home page
     await prisma.todo.create({ data: { title, complete: false } })
     redirect("/")
 }

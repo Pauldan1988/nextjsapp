@@ -1,48 +1,55 @@
 "use client"
 
-import { useState } from "react"
+import { todo } from "node:test"
+import { useState, useReducer } from "react"
+import { useContext } from "react"
+import { TasksDispatchContext } from "./TasksContext"
+//*useState is a react hook that allows you to use state in a functional component
+
 
 
 type TodoItemProps = {
-    id: string
-    title: string
-    complete: boolean
-    toggleTodo: (id: string, complete: boolean) => void
+    task: {
+        id: string
+        title: string
+        complete: boolean
+    }
 }
 //*What my todoitem components looks like when I call it in other functions
 //*onChange event listener is used to toggle the todo item and pass an id to the database
 
-async function deleteTodo(id: string) {
-    const response = await fetch(`/api/delete/${id}`, {
-        method: "DELETE"
-    })
-    if (response.ok) {
-        console.log("deleted")
-    }
-    else {
-        console.log("not deleted")
-    }
-}
 
-export function TodoItem({ id, title, complete, toggleTodo }: TodoItemProps) {
-    const [checked, setChecked] = useState(complete)
+export default function TodoItem({task}:TodoItemProps) {
+    // const [checked, setChecked] = useState(complete)
+    const dispatch = useContext(TasksDispatchContext);  
 
     return <li className="flex gap-1 items-center">
         <input
-            id={id}
+            id={task.id}
             type="checkbox"
             className="cursor-pointer peer"
-            defaultChecked={complete}
-            onChange={e => {toggleTodo(id, e.target.checked); setChecked(e.target.checked);}}
+            checked={task.complete}
+            //@ts-ignore
+            onChange={e => dispatch({
+                type: 'changed',
+                task: {
+                  ...task,
+                  complete: e.target.checked
+                }
+              })}
         />
         <label
-            htmlFor={id}
+            htmlFor={task.id}
             className="cursor-pointer peer-checked:line-through peer-checked:text-slate-500"
         >
-            {title}
+            {task.title}
         </label>
-        {checked ? 
-        <button onClick={() => deleteTodo(id)}>Delete</button> : null}
+        {task.complete ? 
+        //@ts-ignore
+        <button onClick={() => dispatch({
+            type: 'deleted',
+            id: task.id
+          })}>Delete</button> : null}
 
     </li>
 }

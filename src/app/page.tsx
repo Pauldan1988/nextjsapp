@@ -1,21 +1,14 @@
-import { prisma } from '@/db'
+"use client"
+
 import Link from 'next/link'
-import { TodoItem } from '@/components/Todoitem'
+import TodoItem from '@/components/Todoitem'
+import { useContext } from 'react'
+import { TasksContext } from '@/components/TasksContext'
 
-function getTodos() {
-  return prisma.todo.findMany()
-}
 
-async function toggleTodo(id: string, complete: boolean) {
-  "use server"
-//* complete comes from todo item component
-  await prisma.todo.update({ where: { id }, data: { complete } })
-}
-
-export default async function Home() {
-  const todos = await getTodos() //* Calling database in a react component. Use Effect, UUse State, onChange event listeners cannot be used otherwise you cannot query database from a react component
-  // await prisma.todo.create({ data: { title: 'test', complete: false } } )
-
+export default function Home() {
+  const todos = useContext(TasksContext) //* Calling database in a react component. Use Effect, Use State, onChange event listeners cannot be used otherwise you cannot query database from a react component
+  console.log(todos)
   return (
   <>
   <header className="flex justify-between items-center mb-4">
@@ -30,8 +23,9 @@ export default async function Home() {
   
   <ul className="pl-4">  
     {todos.map(todo =>(
-      <TodoItem key={todo.id}{...todo} toggleTodo={toggleTodo} />
+      <TodoItem key={todo.id} task={todo} />
     ))}
   </ul>
   </>
+
 )}
