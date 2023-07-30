@@ -1,4 +1,5 @@
 import { createContext } from 'react';
+import axios from 'axios';
 
 export const TasksContext = createContext(null);
 export const TasksDispatchContext = createContext(null);
@@ -6,6 +7,7 @@ export const TasksDispatchContext = createContext(null);
 export function tasksReducer(tasks: any[], action: any) {
     switch (action.type) {
         case 'added': {
+            axios.post('http://localhost:3000/api/add', {title: action.text})
             return [...tasks, {
                 id: action.id,
                 title: action.text,
