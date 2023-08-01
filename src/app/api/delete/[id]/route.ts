@@ -10,3 +10,4 @@ export async function DELETE(req: Request, context: any) {
 
     return NextResponse.json(`/api/get`)
 }
+//commit
