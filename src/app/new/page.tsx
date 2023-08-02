@@ -1,29 +1,35 @@
+"use client"
+
 import Link from "next/link";
 import { prisma } from "@/db";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { TasksDispatchContext } from "@/components/TasksContext";
+import { useContext } from "react";
 
-//*This function can only run on the server side. It is taking in the FormData as a parameter
-async function createTodo(data: FormData) {
-    "use server"
 
-//*If the text that is submitted in our form is not a string or is empty, throw an error
-    const title = data.get("title")?.valueOf() 
-    if (typeof title !== "string" || title.length === 0) {
-        throw new Error("Invalid Title")
-    }
-//*Creating the todo item using data from FormData and setting the default value to false and then redirecting to the home page
-    await prisma.todo.create({ data: { title, complete: false } })
-    redirect("/")
-}
 
 //* Form that generates the textbox and buttons for creating a new todo item
 export default function Home() {
+    const dispatch = useContext(TasksDispatchContext);
+    const router = useRouter();
+
+    function handleCreate(e: React.FormEvent) {
+        e.preventDefault();
+        const title = e.target.title.value;
+        // console.log(e.target.title.value)
+        //@ts-ignore
+        dispatch({
+            type: 'added',
+            text: title,
+        })
+        router.push("/");
+    }
     return (
         <>
             <header className="flex justify-between items-center mb-4">
                 <h1 className="text-2xl">New</h1>
             </header>
-            <form action={createTodo} className="flex gap-2 flex-col">
+            <form onSubmit={handleCreate} className="flex gap-2 flex-col">
                 <input
                     type="text"
                     name="title"

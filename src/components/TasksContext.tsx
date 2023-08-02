@@ -18,6 +18,7 @@ export function tasksReducer(tasks: any[], action: any) {
             return action.payload.data
         }
         case 'changed': {
+            axios.patch('http://localhost:3000/api/changed', {id: action.task.id, complete: action.task.complete})
             return tasks.map(t => {
                 if (t.id === action.task.id) {
                     return action.task;
@@ -27,6 +28,8 @@ export function tasksReducer(tasks: any[], action: any) {
             });
         }
         case 'deleted': {
+            console.log("action.id", action.id)
+            axios.delete(`http://localhost:3000/api/delete/${action.id}`)
             return tasks.filter(t => t.id !== action.id);
         }
         default: {
