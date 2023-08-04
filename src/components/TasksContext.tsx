@@ -7,7 +7,7 @@ export const TasksDispatchContext = createContext(null);
 export function tasksReducer(tasks: any[], action: any) {
     switch (action.type) {
         case 'added': {
-            if(!action.text) {
+            if(!action.text) { //Non nullable for the user to enter a task with a message
                 alert("Please enter a task")
                 return tasks
             }
