@@ -15,6 +15,7 @@ export default function Home() {
 
     function handleCreate(e: React.FormEvent) {
         e.preventDefault();
+        //@ts-ignore
         const title = e.target.title.value;
         // console.log(e.target.title.value)
         //@ts-ignore

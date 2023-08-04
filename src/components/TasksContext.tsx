@@ -7,6 +7,10 @@ export const TasksDispatchContext = createContext(null);
 export function tasksReducer(tasks: any[], action: any) {
     switch (action.type) {
         case 'added': {
+            if(!action.text) {
+                alert("Please enter a task")
+                return tasks
+            }
             axios.post('http://localhost:3000/api/add', {title: action.text})
             return [...tasks, {
                 id: action.id,

@@ -22,10 +22,15 @@ export default function Home() {
   </header>
   
   <ul className="pl-4">  
-    {todos.map(todo =>(
+    {todos && todos.map((todo: any) =>(
       <TodoItem key={todo.id} task={todo} />
     ))}
   </ul>
   </>
+  //   <ul className="pl-4">  
+  //   {todos && todos.map((todo: any) =>(
+  //     <TodoItem key={todo.id} task={todo} />
+  //   ))}
+  // </ul>
 
 )}
