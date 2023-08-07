@@ -61,3 +61,19 @@ export default function TodoItem({task}:TodoItemProps) {
 
     </li>
 }
+
+
+
+// -Add Change button to the todo item in Todoitem.tsx
+
+// -Link ID and data to the button(Change route)
+
+// -Create handleChange event function for the FormEvent
+
+// -All of this is using the useState function
+
+// -Add a save button to save the changed task(otherwise I will have to send a PATCH request on each changeEvent
+
+// -Make the necessary prisma operations and then send back a good response
+
+// -Add in the text content of the task for the PATCH request for my changed route
