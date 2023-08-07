@@ -20,7 +20,7 @@ type TodoItemProps = {
 
 
 export default function TodoItem({task}:TodoItemProps) {
-    // const [checked, setChecked] = useState(complete)
+    const [edit, setEdit] = useState("")
     const dispatch = useContext(TasksDispatchContext);  
 
     return <li className="flex gap-1 items-center">
@@ -50,6 +50,14 @@ export default function TodoItem({task}:TodoItemProps) {
             type: 'deleted',
             id: task.id
           })}>Delete</button> : null}
+        {task.complete ?
+        //@ts-ignore
+        <button onClick={() => dispatch({
+            type: 'changed',
+            task: {
+                ...task,
+            }
+        })}>Edit</button> : null}
 
     </li>
 }
