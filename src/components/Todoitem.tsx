@@ -84,7 +84,8 @@ export default function TodoItem({task}:TodoItemProps) {
 
 // save button onclick event handler
 
-// isEdited Boolean
+// isEditing Boolean
+// Not editing. As a p tag or a label?
 // true = save
 
 // state object will be toggled
