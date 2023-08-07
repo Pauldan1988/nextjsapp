@@ -20,7 +20,7 @@ type TodoItemProps = {
 
 
 export default function TodoItem({task}:TodoItemProps) {
-    const [edit, setEdit] = useState("")
+    const [edit, setEdit] = useState(false)
     const dispatch = useContext(TasksDispatchContext);  
 
     return <li className="flex gap-1 items-center">
@@ -37,6 +37,10 @@ export default function TodoItem({task}:TodoItemProps) {
                   complete: e.target.checked
                 }
               })}
+        />
+
+        <input 
+            
         />
         <label
             htmlFor={task.id}
