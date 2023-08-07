@@ -77,3 +77,10 @@ export default function TodoItem({task}:TodoItemProps) {
 // -Make the necessary prisma operations and then send back a good response
 
 // -Add in the text content of the task for the PATCH request for my changed route
+
+// save button onclick event handler
+
+// isEdited Boolean
+// true = save
+
+// state object will be toggled
