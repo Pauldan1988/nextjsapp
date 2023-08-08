@@ -19,9 +19,9 @@ type TodoItemProps = {
 //*onChange event listener is used to toggle the todo item and pass an id to the database
 
 
-export default function TodoItem({task}:TodoItemProps) {
+export default function TodoItem({ task }: TodoItemProps) {
     const [edit, setEdit] = useState(false)
-    const dispatch = useContext(TasksDispatchContext);  
+    const dispatch = useContext(TasksDispatchContext);
 
     return <li className="flex gap-1 items-center">
         <input
@@ -33,35 +33,36 @@ export default function TodoItem({task}:TodoItemProps) {
             onChange={e => dispatch({
                 type: 'changed',
                 task: {
-                  ...task,
-                  complete: e.target.checked
+                    ...task,
+                    complete: e.target.checked
                 }
-              })}
+            })}
         />
 
-        <input 
+        {/* <input 
             
-        />
+        /> */}
         <label
             htmlFor={task.id}
-            className="cursor-pointer peer-checked:line-through peer-checked:text-slate-500"
+            className="group-hover: visible cursor-pointer peer-checked:line-through"
         >
             {task.title}
         </label>
-        {task.complete ? 
-        //@ts-ignore
-        <button onClick={() => dispatch({
-            type: 'deleted',
-            id: task.id
-          })}>Delete</button> : null}
+        <div className="group-hover: invisible">
+            <button onClick={() => dispatch({
+                className: "group-hover: focus",
+                type: 'deleted',
+                id: task.id
+            })}>Delete</button>
+        </div>
         {task.complete ?
-        //@ts-ignore
-        <button onClick={() => dispatch({
-            type: 'changed',
-            task: {
-                ...task,
-            }
-        })}>Edit</button> : null}
+            //@ts-ignore
+            <button onClick={() => dispatch({
+                type: 'changed',
+                task: {
+                    ...task,
+                }
+            })}>Edit</button> : null}
 
     </li>
 }
