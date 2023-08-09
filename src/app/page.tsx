@@ -21,7 +21,7 @@ export default function Home() {
     </Link>
   </header>
   
-  <ul className="pl-4">  
+  <ul className="pl-4">
     {todos && todos.map((todo: any) =>(
       <TodoItem key={todo.id} task={todo} />
     ))}
