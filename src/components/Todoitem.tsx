@@ -18,26 +18,26 @@ type TodoItemProps = {
 //*onChange event listener is used to toggle the todo item and pass an id to the database
 
 export default function TodoItem({ task }: TodoItemProps) {
-  const [edit, setEdit] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const dispatch = useContext(TasksDispatchContext);
 
   function handleChange(e: React.FormEvent) {
-    e.preventDefault()
+    e.preventDefault();
     //@ts-ignore
-    const title = e.target.title.value
+    const title = e.target.title.value;
     //@ts-ignore
-    const id = e.target.id
+    const id = e.target.id.value;
     //@ts-ignore
     dispatch({
       type: "edited",
-      task: {
-        ...task
-      }
+      id: id,
+      text: title,
     })
-  }
 
+  }
+ 
   return (
     <li
       onMouseEnter={() => setShowDelete(true)}
@@ -84,15 +84,7 @@ export default function TodoItem({ task }: TodoItemProps) {
           </button>
         </div>
       ) : null}
-
-      <form onSubmit={handleChange}>
-        <input
-
-          onChange={(e) => setNewTitle(e.target.value)}
-          className="cursor-pointer peer"
-
-        />
-      </form>
+      {showDelete ? (
       <div className="group relative focus: text-slate-400 hover:text-blue-500">
         <button
           onClick={() =>
@@ -107,6 +99,7 @@ export default function TodoItem({ task }: TodoItemProps) {
           Save
         </button>
       </div>
+    ) : null}
       {showDelete ? (
         <div className="group relative focus: text-slate-400 hover:text-red-500">
           <button
