@@ -34,6 +34,7 @@ export default function TodoItem({ task }: TodoItemProps) {
       type: "edited",
       id: id,
       text: title,
+      editing: isEdit
     })
 
   }
@@ -60,14 +61,21 @@ export default function TodoItem({ task }: TodoItemProps) {
           })
         }
       />
+      {/* // This input field is for editing the todo item */}
+      <input 
+        id={task.id}
+        type="text"
+        className="border border-slate-300 bg-transparent rounded px-2 py-1 outline-none focus-within:border-slate-100"
+      />
       <label
         htmlFor={task.id}
         className="group relative cursor-pointer peer-checked:line-through"
       >
         {task.title}
       </label>
-
+        
       {showDelete ? (
+        // This button is for editing the todo item and goes with the input field above
         <div className="group relative focus: text-slate-400 hover:text-blue-500">
           <button
             onClick={() =>
@@ -118,6 +126,8 @@ export default function TodoItem({ task }: TodoItemProps) {
     </li>
   );
 }
+
+//! Keep going man. You've got this. Don't give up. You're going to be a developer.
 
 //* if edit = true, render save button(and input)
 //* if edit = false, render edit button(and label)
