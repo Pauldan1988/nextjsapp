@@ -1,7 +1,6 @@
 "use client"
 
 import Link from "next/link";
-import { prisma } from "@/db";
 import { useRouter } from "next/navigation";
 import { TasksDispatchContext } from "@/components/TasksContext";
 import { useContext } from "react";
@@ -52,4 +51,3 @@ export default function Home() {
         </>
     )
 }
-//commit
