@@ -1,6 +1,5 @@
 "use client";
 
-import { todo } from "node:test";
 import { useState, useReducer } from "react";
 import { useContext } from "react";
 import { TasksDispatchContext } from "./TasksContext";
@@ -26,14 +25,14 @@ export default function TodoItem({ task }: TodoItemProps) {
   function handleChange(e: React.FormEvent) {
     e.preventDefault();
     //@ts-ignore
-    const newTitle = e.target.title.value;
+    const title = e.target.title.value;
     //@ts-ignore
     const id = e.target.id.value;
     //@ts-ignore
     dispatch({
       type: "edited",
       id: id,
-      text: newTitle,
+      text: title,
       editing: isEdit
     })
 
@@ -62,6 +61,11 @@ export default function TodoItem({ task }: TodoItemProps) {
         }
       />
       {/* //! This input field is for editing the todo item */}
+      {/* <input 
+        id={task.id}
+        type="text"
+        className="border border-slate-300 bg-transparent rounded px-2 py-1 outline-none focus-within:border-slate-100"
+      /> */}
       <label
         htmlFor={task.id}
         className="group relative cursor-pointer peer-checked:line-through"
@@ -69,46 +73,38 @@ export default function TodoItem({ task }: TodoItemProps) {
         {task.title}
       </label>
 
-      {showDelete ? (
+      {/* {showDelete ? (
         //! This button is for editing the todo item and goes with the input field above
-        //! -Create handle change function(Takes in FormEvent, Sets newTitle State). Goes in the new input field on Todoitem.tsx
+      <div className="group relative focus: text-slate-400 hover:text-blue-500">
+      <button
+          onClick={() =>
+            //@ts-ignore
+            dispatch({
+              type: "saved",
+              title: task.title,
+              id: task.id,
+            })
+          }
+        >
+          Save
+        </button>
+      </div>
+      ) : null} */}
 
+      {showDelete ? (
         <div className="group relative focus: text-slate-400 hover:text-blue-500">
-          <form onSubmit={handleChange} className="flex gap-2 flex-col">
-          <input
-            id={task.id}
-            type="text"
-            className="border border-slate-300 bg-transparent rounded px-1 py-1 outline-none focus-within:border-slate-100"
-          />
-          </form>
           <button
             onClick={() =>
               //@ts-ignore
               dispatch({
                 type: "edited",
                 task: {
-                  isEditing: true, 
+                  ...task,
                 },
               })
             }
           >
             Edit
-          </button>
-        </div>
-      ) : null}
-      {showDelete ? (
-        <div className="group relative focus: text-slate-400 hover:text-blue-500">
-          <button
-            onClick={() =>
-              //@ts-ignore
-              dispatch({
-                type: "saved",
-                title: task.title,
-                id: task.id,
-              })
-            }
-          >
-            Save
           </button>
         </div>
       ) : null}
