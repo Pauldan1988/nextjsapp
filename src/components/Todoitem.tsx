@@ -11,6 +11,7 @@ type TodoItemProps = {
     title: string;
     complete: boolean;
     isEditing: boolean;
+
   };
 };
 //*What my todoitem components looks like when I call it in other functions
@@ -18,32 +19,26 @@ type TodoItemProps = {
 
 export default function TodoItem({ task }: TodoItemProps) {
   const [showDelete, setShowDelete] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
   const [newTitle, setNewTitle] = useState("");
+  const [isEditing, setIsEditing] = useState(false);
   const dispatch = useContext(TasksDispatchContext);
+
 
   function handleChange(e: React.FormEvent) {
     e.preventDefault();
-    //@ts-ignore
     const title = e.target.title.value;
-    //@ts-ignore
-    const id = e.target.id.value;
-    //@ts-ignore
-    dispatch({
-      type: "edited",
-      id: id,
-      text: title,
-      editing: isEdit
-    })
-
+    const setIsEditing = e.target.isEditing; 
+    console.log(e.target.isEditing)
   }
 
+  
   return (
     <li
       onMouseEnter={() => setShowDelete(true)}
       onMouseLeave={() => setShowDelete(false)}
       className="flex gap-1 items-center"
     >
+      <form onSubmit={handleChange}>
       <input
         id={task.id}
         type="checkbox"
@@ -60,69 +55,68 @@ export default function TodoItem({ task }: TodoItemProps) {
           })
         }
       />
-      {/* //! This input field is for editing the todo item */}
-      {/* <input 
-        id={task.id}
-        type="text"
-        className="border border-slate-300 bg-transparent rounded px-2 py-1 outline-none focus-within:border-slate-100"
-      /> */}
-      <label
-        htmlFor={task.id}
-        className="group relative cursor-pointer peer-checked:line-through"
-      >
-        {task.title}
-      </label>
 
-      {/* {showDelete ? (
-        //! This button is for editing the todo item and goes with the input field above
-      <div className="group relative focus: text-slate-400 hover:text-blue-500">
-      <button
-          onClick={() =>
-            //@ts-ignore
-            dispatch({
-              type: "saved",
-              title: task.title,
-              id: task.id,
-            })
-          }
-        >
-          Save
-        </button>
-      </div>
-      ) : null} */}
-
-      {showDelete ? (
-        <div className="group relative focus: text-slate-400 hover:text-blue-500">
-          <button
-            onClick={() =>
+        {isEditing ? (
+          <div className="group relative focus: text-slate-400 hover:text-blue-500">
+          <input
+            type="text"
+            value={newTitle}
+            onChange={(e) =>
               //@ts-ignore
               dispatch({
                 type: "edited",
                 task: {
                   ...task,
-                },
+                  title: e.target.value
+                }
               })
+            }
+          />
+          
+          <button
+            onClick={() =>
+              setIsEditing(true)
             }
           >
             Edit
           </button>
         </div>
-      ) : null}
-      {showDelete ? (
-        <div className="group relative focus: text-slate-400 hover:text-red-500">
-          <button
-            onClick={() =>
-              //@ts-ignore
-              dispatch({
-                type: "deleted",
-                id: task.id,
-              })
-            }
+        ) : null}
+
+          <label
+            htmlFor={task.id}
+            className="group relative cursor-pointer peer-checked:line-through"
           >
-            Delete
-          </button>
-        </div>
-      ) : null}
+            {task.title}
+          </label>
+
+          {showDelete ? (
+            <div className="group relative focus: text-slate-400 hover:text-blue-500">
+              <button
+                onClick={() =>
+                  setNewTitle("")
+                }
+              >
+                Edit
+              </button>
+            </div>
+          ) : null}
+          {showDelete ? (
+            <div className="group relative focus: text-slate-400 hover:text-red-500">
+              <button
+                onClick={() =>
+                  //@ts-ignore
+                  dispatch({
+                    type: "deleted",
+                    id: task.id,
+                  })
+                }
+              >
+                Delete
+              </button>
+            </div>
+          ) : null}
+        </form>
     </li>
   );
 }
@@ -145,3 +139,61 @@ export default function TodoItem({ task }: TodoItemProps) {
 // -Dispatching a resolver update title, which will hit API endpoint, which will mutate Prisma database
 
 // -Make the necessary prisma operations and then send back a good response
+
+
+
+{/* {showDelete ? (
+        //! This button is for editing the todo item and goes with the input field above
+      <div className="group relative focus: text-slate-400 hover:text-blue-500">
+      <button
+          onClick={() =>
+            //@ts-ignore
+            dispatch({
+              type: "saved",
+              title: task.title,
+              id: task.id,
+            })
+          }
+        >
+          Save
+        </button>
+      </div>
+      ) : null} */}
+
+
+
+    // if(isEditing) {
+    //   return (
+    //     <form onSubmit={handleChange}>
+    //       <input
+    //         type="text"
+    //         name="title"
+    //         value={task.title}
+    //         className="border border-slate-300 bg-transparent rounded px-2 py-1 outline-none focus-within:border-slate-100"
+    //       />
+    //       <div className="flex gap-1 justify-end">
+    //         <button
+    //           type="submit"
+    //           className="border border-slate-300 text-slate-300 px-2 py-1 rounded hover:bg-slate-700 focus-within:bg-slate-700 outline-none"
+    //         >Save</button>
+    //       </div>
+    //     </form>
+    //   )
+    // } else {
+    //   return (
+    //     <form onSubmit={handleChange}>
+    //       <input
+    //         type="text"
+    //         name="title"
+    //         value={task.title}
+    //         className="border border-slate-300 bg-transparent rounded px-2 py-1 outline-none focus-within:border-slate-100"
+    //       />
+    //       <div className="flex gap-1 justify-end">
+    //         <button
+    //           type="submit"
+    //           className="border border-slate-300 text-slate-300 px-2 py-1 rounded hover:bg-slate-700 focus-within:bg-slate-700 outline-none"
+    //         >Edit</button>
+    //       </div>
+    //     </form>
+    //   )
+    // }
