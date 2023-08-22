@@ -23,13 +23,10 @@ export function tasksReducer(tasks: any[], action: any) {
         }
         case 'changed': {
             axios.patch('http://localhost:3000/api/changed', {id: action.task.id, complete: action.task.complete})
-            return tasks.map(t => {
-                if (t.id === action.task.id) {
-                    return action.task;
-                } else {
-                    return t;
-                }
-            });
+            return [...tasks, {
+                id: action.task.id,
+                complete: action.task.complete
+            }]
         }
         case 'deleted': {
             console.log("action.id", action.id)

@@ -3,6 +3,7 @@
 import { useState, useReducer } from "react";
 import { useContext } from "react";
 import { TasksDispatchContext } from "./TasksContext";
+import { useRouter } from "next/navigation";
 //*useState is a react hook that allows you to use state in a functional component
 
 type TodoItemProps = {
@@ -22,102 +23,110 @@ export default function TodoItem({ task }: TodoItemProps) {
   const [newTitle, setNewTitle] = useState("");
   const [isEditing, setIsEditing] = useState(false);
   const dispatch = useContext(TasksDispatchContext);
+  const router = useRouter();
 
+  console.log("task", task)
 
   function handleChange(e: React.FormEvent) {
     e.preventDefault();
     const title = e.target.title.value;
-    const setIsEditing = e.target.isEditing; 
-    console.log(e.target.isEditing)
+    const setIsEditing = e.target.isEditing;
+    dispatch({
+      type: "edited",
+      text: title,
+
+      // isEditing: setIsEditing
+    })
+    router.push("/");
   }
-  //comment
   
   return (
-    <li
-      onMouseEnter={() => setShowDelete(true)}
-      onMouseLeave={() => setShowDelete(false)}
-      className="flex gap-1 items-center"
-    >
-      <form onSubmit={handleChange}>
-      <input
-        id={task.id}
-        type="checkbox"
-        className="cursor-pointer peer"
-        checked={task.complete}
-        onChange={(e) =>
-          //@ts-ignore
-          dispatch({
-            type: "changed",
-            task: {
-              ...task,
-              complete: e.target.checked,
-            },
-          })
-        }
-      />
+    <form onSubmit={handleChange} className="flex gap-1 items-center">
+      <li
+        onMouseEnter={() => setShowDelete(true)}
+        onMouseLeave={() => setShowDelete(false)}
+        className="flex gap-1 items-center"
+      >
+        <input
+          id={task.id}
+          type="checkbox"
+          className="cursor-pointer peer"
+          checked={task.complete}
+          onChange={(e) =>
+            //@ts-ignore
+            dispatch({
+              type: "changed",
+              task: {
+                ...task,
+                complete: e.target.checked,
+              },
+            })
+          }
+        />
 
         {isEditing ? (
           <div className="group relative focus: text-slate-400 hover:text-blue-500">
-          <input
-            type="text"
-            value={newTitle}
-            onChange={(e) =>
-              //@ts-ignore
-              dispatch({
-                type: "edited",
-                task: {
-                  ...task,
-                  title: e.target.value
-                }
-              })
-            }
-          />
-          
-          <button
-            onClick={() =>
-              setIsEditing(true)
-            }
-          >
-            Edit
-          </button>
-        </div>
+            <input
+              type="text"
+              value={newTitle}
+              onChange={(e) =>
+                //@ts-ignore
+                dispatch({
+                  type: "edited",
+                  task: {
+                    ...task,
+                    title: e.target.value,
+                    isEditing: false
+                  }
+                })
+              }
+            />
+            
+            <button
+              onClick={() =>
+                setIsEditing(true)
+              }
+            >
+              Edit
+            </button>
+          </div>
         ) : null}
 
-          <label
-            htmlFor={task.id}
-            className="group relative cursor-pointer peer-checked:line-through"
-          >
-            {task.title}
-          </label>
+        <label
+          htmlFor={task.id}
+          className="group relative cursor-pointer peer-checked:line-through"
+        >
+          {task.title}
+        </label>
 
-          {showDelete ? (
-            <div className="group relative focus: text-slate-400 hover:text-blue-500">
-              <button
-                onClick={() =>
-                  setNewTitle("")
-                }
-              >
-                Edit
-              </button>
-            </div>
-          ) : null}
-          {showDelete ? (
-            <div className="group relative focus: text-slate-400 hover:text-red-500">
-              <button
-                onClick={() =>
-                  //@ts-ignore
-                  dispatch({
-                    type: "deleted",
-                    id: task.id,
-                  })
-                }
-              >
-                Delete
-              </button>
-            </div>
-          ) : null}
-        </form>
-    </li>
+        {showDelete ? (
+          <div className="group relative focus: text-slate-400 hover:text-blue-500">
+            <button
+              onClick={() =>
+                setNewTitle("")
+              }
+            >
+              Edit
+            </button>
+          </div>
+        ) : null}
+        {showDelete ? (
+          <div className="group relative focus: text-slate-400 hover:text-red-500">
+            <button
+              onClick={() =>
+                //@ts-ignore
+                dispatch({
+                  type: "deleted",
+                  id: task.id,
+                })
+              }
+            >
+              Delete
+            </button>
+          </div>
+        ) : null}
+      </li>
+    </form>
   );
 }
 
@@ -162,38 +171,38 @@ export default function TodoItem({ task }: TodoItemProps) {
 
 
 
-    // if(isEditing) {
-    //   return (
-    //     <form onSubmit={handleChange}>
-    //       <input
-    //         type="text"
-    //         name="title"
-    //         value={task.title}
-    //         className="border border-slate-300 bg-transparent rounded px-2 py-1 outline-none focus-within:border-slate-100"
-    //       />
-    //       <div className="flex gap-1 justify-end">
-    //         <button
-    //           type="submit"
-    //           className="border border-slate-300 text-slate-300 px-2 py-1 rounded hover:bg-slate-700 focus-within:bg-slate-700 outline-none"
-    //         >Save</button>
-    //       </div>
-    //     </form>
-    //   )
-    // } else {
-    //   return (
-    //     <form onSubmit={handleChange}>
-    //       <input
-    //         type="text"
-    //         name="title"
-    //         value={task.title}
-    //         className="border border-slate-300 bg-transparent rounded px-2 py-1 outline-none focus-within:border-slate-100"
-    //       />
-    //       <div className="flex gap-1 justify-end">
-    //         <button
-    //           type="submit"
-    //           className="border border-slate-300 text-slate-300 px-2 py-1 rounded hover:bg-slate-700 focus-within:bg-slate-700 outline-none"
-    //         >Edit</button>
-    //       </div>
-    //     </form>
-    //   )
-    // }
+// if(isEditing) {
+//   return (
+//     <form onSubmit={handleChange}>
+//       <input
+//         type="text"
+//         name="title"
+//         value={task.title}
+//         className="border border-slate-300 bg-transparent rounded px-2 py-1 outline-none focus-within:border-slate-100"
+//       />
+//       <div className="flex gap-1 justify-end">
+//         <button
+//           type="submit"
+//           className="border border-slate-300 text-slate-300 px-2 py-1 rounded hover:bg-slate-700 focus-within:bg-slate-700 outline-none"
+//         >Save</button>
+//       </div>
+//     </form>
+//   )
+// } else {
+//   return (
+//     <form onSubmit={handleChange}>
+//       <input
+//         type="text"
+//         name="title"
+//         value={task.title}
+//         className="border border-slate-300 bg-transparent rounded px-2 py-1 outline-none focus-within:border-slate-100"
+//       />
+//       <div className="flex gap-1 justify-end">
+//         <button
+//           type="submit"
+//           className="border border-slate-300 text-slate-300 px-2 py-1 rounded hover:bg-slate-700 focus-within:bg-slate-700 outline-none"
+//         >Edit</button>
+//       </div>
+//     </form>
+//   )
+// }
