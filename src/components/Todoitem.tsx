@@ -11,8 +11,6 @@ type TodoItemProps = {
     id: string;
     title: string;
     complete: boolean;
-    isEditing: boolean;
-
   };
 };
 //*What my todoitem components looks like when I call it in other functions
@@ -25,23 +23,60 @@ export default function TodoItem({ task }: TodoItemProps) {
   const dispatch = useContext(TasksDispatchContext);
   const router = useRouter();
 
-  console.log("task", task)
 
-  function handleChange(e: React.FormEvent) {
-    e.preventDefault();
-    const title = e.target.title.value;
-    const setIsEditing = e.target.isEditing;
-    dispatch({
-      type: "edited",
-      text: title,
+  // if (isEditing) {
+  //   return <input
+  //     type="submit"
+  //     value={newTitle}
+  //     onChange={() =>
+  //       //@ts-ignore
+  //       dispatch({
+  //         type: "edited",
+  //         task: {
+  //           ...task,
+  //         }
+  //       })
+  //     }
+  //   />
+  // }
 
-      // isEditing: setIsEditing
-    })
-    router.push("/");
-  }
   
+
+
+  // function handleChange(e: React.FormEvent) {
+  //   e.preventDefault();
+  //   setNewTitle("")
+  //   const title = e.target.title.value;
+  //   //@ts-ignore
+  //   // const setIsEditing = e.target.isEditing;
+  //   //@ts-ignore
+  //   dispatch({
+  //     type: "changed",
+  //   })
+  //   router.push("/");
+  // }
+
+  // if (isEditing) {
+  //   return <form onSubmit={handleChange}>
+  //   <input
+  //     type="text"
+  //     value={newTitle}
+  //     className="border border-slate-300 bg-transparent rounded px-2 py-1 outline-none focus-within:border-slate-100"
+  //     onChange={() =>
+  //       //@ts-ignore
+  //       dispatch({
+  //         task: {
+  //           type: "changed",
+  //           ...task,
+  //         }
+  //       })
+  //     }
+  //   />
+  //   </form>
+  // }
+  // console.log("handleChange", handleChange)
   return (
-    <form onSubmit={handleChange} className="flex gap-1 items-center">
+    
       <li
         onMouseEnter={() => setShowDelete(true)}
         onMouseLeave={() => setShowDelete(false)}
@@ -64,24 +99,47 @@ export default function TodoItem({ task }: TodoItemProps) {
           }
         />
 
-        {isEditing ? (
-          <div className="group relative focus: text-slate-400 hover:text-blue-500">
-            <input
-              type="text"
-              value={newTitle}
-              onChange={(e) =>
-                //@ts-ignore
-                dispatch({
-                  type: "edited",
-                  task: {
-                    ...task,
-                    title: e.target.value,
-                    isEditing: false
-                  }
-                })
+        {/* <input
+          type="text"
+          value={newTitle}
+          onChange={() =>
+            //@ts-ignore
+            dispatch({
+              type: "changed",
+              task: {
+                ...task,
               }
-            />
-            
+            })
+          }
+        /> */}
+
+        {/* <label
+          htmlFor={task.title}
+          className="group relative focus: text-slate-400 hover:text-blue-500"
+        >
+         {newTitle}
+        </label>  */}
+
+        {/* {isEditing ? (
+          <div className="group relative focus: text-slate-400 hover:text-blue-500">
+            <button
+              onClick={() =>
+                setNewTitle("")
+              }
+            >
+              Save
+            </button>
+          </div>
+        ) : null } */}
+
+        <label
+          htmlFor={task.id}
+          className="group relative cursor-pointer peer-checked:line-through"
+        >
+          {task.title}
+        </label>
+        {/* {showDelete ? (
+          <div className="group relative focus: text-slate-400 hover:text-blue-500">
             <button
               onClick={() =>
                 setIsEditing(true)
@@ -90,26 +148,17 @@ export default function TodoItem({ task }: TodoItemProps) {
               Edit
             </button>
           </div>
-        ) : null}
-
-        <label
-          htmlFor={task.id}
-          className="group relative cursor-pointer peer-checked:line-through"
-        >
-          {task.title}
-        </label>
-
-        {showDelete ? (
+        ) : isEditing ? (
           <div className="group relative focus: text-slate-400 hover:text-blue-500">
-            <button
-              onClick={() =>
-                setNewTitle("")
-              }
-            >
-              Edit
-            </button>
-          </div>
-        ) : null}
+          <button
+            onClick={() =>
+              setIsEditing(false)
+            }
+          >
+            Save
+          </button>
+        </div>
+        ) : null} */}
         {showDelete ? (
           <div className="group relative focus: text-slate-400 hover:text-red-500">
             <button
@@ -126,7 +175,6 @@ export default function TodoItem({ task }: TodoItemProps) {
           </div>
         ) : null}
       </li>
-    </form>
   );
 }
 

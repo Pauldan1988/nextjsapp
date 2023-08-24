@@ -9,8 +9,9 @@ export async function PATCH(req: Request) {
             id: id,
         },
         data: {
+            id: id,
             complete: complete,
-        }
+        },
     })
 
     return NextResponse.json(updatedTask)
