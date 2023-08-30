@@ -20,129 +20,118 @@ export default function TodoItem({ task }: TodoItemProps) {
   const [showDelete, setShowDelete] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [todoToEdit, setTodoToEdit] = useState(null);
+  const [showSaveButton, setShowSaveButton] = useState(false);
   const dispatch = useContext(TasksDispatchContext);
   const router = useRouter();
 
+  function handleEditClick(todo: any) {
+    setShowSaveButton(true)
+    setTodoToEdit(todo);
+  }
 
-  // if (isEditing) {
-  //   return <input
-  //     type="submit"
-  //     value={newTitle}
-  //     onChange={() =>
-  //       //@ts-ignore
-  //       dispatch({
-  //         type: "edited",
-  //         task: {
-  //           ...task,
-  //         }
-  //       })
-  //     }
-  //   />
-  // }
+  function handleChange(e: React.FormEvent) {
+    e.preventDefault();
+    //@ts-ignore
+    const text = e.target.value;
+    setNewTitle("");
+    //@ts-ignore
+    dispatch({
+      type: "updated",
+      task: {
+        ...task,
+        title: text
+      }
+    })
+  }
 
-  
-
-
-  // function handleChange(e: React.FormEvent) {
-  //   e.preventDefault();
-  //   setNewTitle("")
-  //   const title = e.target.title.value;
-  //   //@ts-ignore
-  //   // const setIsEditing = e.target.isEditing;
-  //   //@ts-ignore
-  //   dispatch({
-  //     type: "changed",
-  //   })
-  //   router.push("/");
-  // }
-
-  // if (isEditing) {
-  //   return <form onSubmit={handleChange}>
-  //   <input
-  //     type="text"
-  //     value={newTitle}
-  //     className="border border-slate-300 bg-transparent rounded px-2 py-1 outline-none focus-within:border-slate-100"
-  //     onChange={() =>
-  //       //@ts-ignore
-  //       dispatch({
-  //         task: {
-  //           type: "changed",
-  //           ...task,
-  //         }
-  //       })
-  //     }
-  //   />
-  //   </form>
-  // }
-  // console.log("handleChange", handleChange)
+  console.log("handleChange", handleChange)
   return (
-    
-      <li
-        onMouseEnter={() => setShowDelete(true)}
-        onMouseLeave={() => setShowDelete(false)}
-        className="flex gap-1 items-center"
-      >
-        <input
-          id={task.id}
-          type="checkbox"
-          className="cursor-pointer peer"
-          checked={task.complete}
-          onChange={(e) =>
-            //@ts-ignore
-            dispatch({
-              type: "changed",
-              task: {
-                ...task,
-                complete: e.target.checked,
-              },
-            })
-          }
-        />
 
-        {/* <input
+    <li
+      onMouseEnter={() => setShowDelete(true)}
+      onMouseLeave={() => setShowDelete(false)}
+      className="flex gap-1 items-center"
+    >
+      <input
+        id={task.id}
+        type="checkbox"
+        className="cursor-pointer peer"
+        checked={task.complete}
+        onChange={(e) =>
+          //@ts-ignore
+          dispatch({
+            type: "changed",
+            task: {
+              ...task,
+              complete: e.target.checked,
+            },
+          })
+        }
+      />
+
+      {isEditing ? (
+        <div className="group relative focus: text-slate-400 hover:text-blue-500">
+          <button
+            onClick={() =>
+              setNewTitle("")
+            }
+          >
+            Save
+          </button>
+        </div>
+      ) : null}
+
+      <label
+        htmlFor={task.id}
+        className="group relative cursor-pointer peer-checked:line-through"
+      >
+        {task.title}
+      </label>
+
+      <form onSubmit={handleChange}>
+        <input
           type="text"
           value={newTitle}
-          onChange={() =>
-            //@ts-ignore
-            dispatch({
-              type: "changed",
-              task: {
-                ...task,
-              }
-            })
-          }
-        /> */}
+          onChange={(e) => setNewTitle(e.target.value)}
+          className=" flex gap-2 flex-col w-1rem"
+        />
+        <div>
+          <button
+            className="flex text-align"
+            onClick={() =>
+              setIsEditing(false)
+            }
+          >
+            Save
+          </button>
+        </div>
+      </form>
 
-        {/* <label
-          htmlFor={task.title}
-          className="group relative focus: text-slate-400 hover:text-blue-500"
-        >
-         {newTitle}
-        </label>  */}
+      {showDelete ? (
+        <div className="group relative focus: text-slate-400 hover:text-red-500">
+          <button
+            onClick={() =>
+              //@ts-ignore
+              dispatch({
+                type: "deleted",
+                id: task.id,
+              })
+            }
+          >
+            Delete
+          </button>
+        </div>
+      ) : null}
+    </li>
+  );
+}
 
-        {/* {isEditing ? (
+{/* {showDelete ? (
           <div className="group relative focus: text-slate-400 hover:text-blue-500">
             <button
               onClick={() =>
-                setNewTitle("")
-              }
-            >
-              Save
-            </button>
-          </div>
-        ) : null } */}
-
-        <label
-          htmlFor={task.id}
-          className="group relative cursor-pointer peer-checked:line-through"
-        >
-          {task.title}
-        </label>
-        {/* {showDelete ? (
-          <div className="group relative focus: text-slate-400 hover:text-blue-500">
-            <button
-              onClick={() =>
-                setIsEditing(true)
+                handleEditClick(task)
               }
             >
               Edit
@@ -152,33 +141,15 @@ export default function TodoItem({ task }: TodoItemProps) {
           <div className="group relative focus: text-slate-400 hover:text-blue-500">
           <button
             onClick={() =>
-              setIsEditing(false)
+              setIsEditing(false) 
             }
           >
             Save
           </button>
         </div>
-        ) : null} */}
-        {showDelete ? (
-          <div className="group relative focus: text-slate-400 hover:text-red-500">
-            <button
-              onClick={() =>
-                //@ts-ignore
-                dispatch({
-                  type: "deleted",
-                  id: task.id,
-                })
-              }
-            >
-              Delete
-            </button>
-          </div>
-        ) : null}
-      </li>
-  );
-}
+          ) : null} */}
 
-//! Keep going man. You've got this. Don't give up. You're going to be a developer.
+
 
 //* if edit = true, render save button(and input)
 //* if edit = false, render edit button(and label)

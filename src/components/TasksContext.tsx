@@ -31,10 +31,16 @@ export function tasksReducer(tasks: any[], action: any) {
                 }
               });
         }
-        // case 'edited': {
-        //     axios.patch('http://localhost:3000/api/edited', {id: action.task.id, title: action.task.title})
-
-        // }
+        case 'updated': {
+            axios.put('http://localhost:3000/api/updated', {id: action.task.id, title: action.task.title})
+            return tasks.map(t => {
+                if (t.id === action.task.id) {
+                  return action.task;
+                } else {
+                  return t;
+                }
+              });     
+        }
         case 'deleted': {
             console.log("action.id", action.id)
             axios.delete(`http://localhost:3000/api/delete/${action.id}`)
