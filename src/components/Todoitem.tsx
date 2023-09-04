@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useReducer } from "react";
+import { useState, useReducer, useEffect } from "react";
 import { useContext } from "react";
 import { TasksDispatchContext } from "./TasksContext";
 import { useRouter } from "next/navigation";
@@ -20,32 +20,33 @@ export default function TodoItem({ task }: TodoItemProps) {
   const [showDelete, setShowDelete] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [isEditing, setIsEditing] = useState(false);
-  const [todoToEdit, setTodoToEdit] = useState(null);
-  const [showSaveButton, setShowSaveButton] = useState(false);
   const dispatch = useContext(TasksDispatchContext);
   const router = useRouter();
 
-  function handleEditClick(todo: any) {
-    setShowSaveButton(true)
-    setTodoToEdit(todo);
-  }
+
 
   function handleChange(e: React.FormEvent) {
     e.preventDefault();
     //@ts-ignore
-    const text = e.target.value;
-    setNewTitle("");
+    setNewTitle(e.target.title.value);
+    setIsEditing(false);
     //@ts-ignore
     dispatch({
-      type: "updated",
-      task: {
-        ...task,
-        title: text
-      }
+      type: "edited",
+      //@ts-ignore
+      id: e.target.id,
+      //@ts-ignore
+      title: e.target.title
     })
   }
 
-  console.log("handleChange", handleChange)
+  function handleEditClick() {
+    setIsEditing(true) 
+      
+    }
+    handleEditClick()
+  // console.log(handleChange)
+  console.log("handleEditClick", handleEditClick)
   return (
 
     <li
@@ -70,18 +71,6 @@ export default function TodoItem({ task }: TodoItemProps) {
         }
       />
 
-      {isEditing ? (
-        <div className="group relative focus: text-slate-400 hover:text-blue-500">
-          <button
-            onClick={() =>
-              setNewTitle("")
-            }
-          >
-            Save
-          </button>
-        </div>
-      ) : null}
-
       <label
         htmlFor={task.id}
         className="group relative cursor-pointer peer-checked:line-through"
@@ -89,24 +78,39 @@ export default function TodoItem({ task }: TodoItemProps) {
         {task.title}
       </label>
 
-      <form onSubmit={handleChange}>
+      <label htmlFor={task}> {handleEditClick} </label>
+
+      {showDelete && isEditing ? (
+        <div className="group relative focus:text-slate-400 hover:  text-blue-500">
+            <button
+              onClick={handleEditClick}
+            >
+              Edit
+            </button>
+          {/* </input> */}
+        </div>
+      ) : showDelete && isEditing ? (
+
+      <form className="flex text-left group relative focus: text-slate-400 hover:text-blue-500"
+        onSubmit={handleChange}>
         <input
           type="text"
           value={newTitle}
-          onChange={(e) => setNewTitle(e.target.value)}
+          onChange={handleChange}
           className=" flex gap-2 flex-col w-1rem"
         />
         <div>
           <button
-            className="flex text-align"
-            onClick={() =>
-              setIsEditing(false)
+            className="flex text-left"
+            onClick={(e) =>
+              setNewTitle(e.target.title.value)
             }
           >
             Save
           </button>
         </div>
       </form>
+      ) : null}
 
       {showDelete ? (
         <div className="group relative focus: text-slate-400 hover:text-red-500">
@@ -224,4 +228,17 @@ export default function TodoItem({ task }: TodoItemProps) {
 //       </div>
 //     </form>
 //   )
+// }
+
+//  dispatchSetState(fiber, queue, action) {
+//   {
+//     if (typeof arguments[3] === 'function') {
+//       error("State updates from the useState() and useReducer() Hooks don't support the " + 'second callback argument. To execute a side effect after ' + 'rendering, declare it in the component body with useEffect().');
+
+  // const [todoToEdit, setTodoToEdit] = useState(null);
+  // const [showSaveButton, setShowSaveButton] = useState(false);
+
+  // function handleEditClick(todo: any) {
+//   setShowSaveButton(true)
+//   setTodoToEdit(todo);
 // }

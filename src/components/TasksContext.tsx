@@ -31,8 +31,8 @@ export function tasksReducer(tasks: any[], action: any) {
                 }
               });
         }
-        case 'updated': {
-            axios.put('http://localhost:3000/api/updated', {id: action.task.id, title: action.task.title})
+        case 'edited': {
+            axios.put('http://localhost:3000/api/edited', {id: action.task.id, title: action.task.title})
             return tasks.map(t => {
                 if (t.id === action.task.id) {
                   return action.task;
@@ -47,7 +47,7 @@ export function tasksReducer(tasks: any[], action: any) {
             return tasks.filter(t => t.id !== action.id);
         }
         default: {
-            throw Error('Unknown action: ' + action.type);
+            throw Error('Unknown action: ', action.type);
         }
     }
 }
