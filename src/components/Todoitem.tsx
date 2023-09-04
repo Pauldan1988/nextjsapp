@@ -23,28 +23,26 @@ export default function TodoItem({ task }: TodoItemProps) {
   const dispatch = useContext(TasksDispatchContext);
   const router = useRouter();
 
+  function handleEditClick() {
+    setIsEditing(true)
+
+  }
 
 
   function handleChange(e: React.FormEvent) {
     e.preventDefault();
     //@ts-ignore
-    setNewTitle(e.target.title.value);
+    // setNewTitle(e.target.title.value);
     setIsEditing(false);
     //@ts-ignore
     dispatch({
       type: "edited",
-      //@ts-ignore
-      id: e.target.id,
-      //@ts-ignore
-      title: e.target.title
+      task: {
+        ...task,
+        title: e.target.value
+      }
     })
   }
-
-  function handleEditClick() {
-    setIsEditing(true) 
-      
-    }
-    handleEditClick()
   // console.log(handleChange)
   console.log("handleEditClick", handleEditClick)
   return (
@@ -78,40 +76,38 @@ export default function TodoItem({ task }: TodoItemProps) {
         {task.title}
       </label>
 
-      <label htmlFor={task}> {handleEditClick} </label>
+      {/* <label htmlFor={}> {} </label> */}
 
       {showDelete && isEditing ? (
         <div className="group relative focus:text-slate-400 hover:  text-blue-500">
-            <button
-              onClick={handleEditClick}
-            >
-              Edit
-            </button>
+          <button
+            onClick={handleEditClick}
+          >
+            Edit
+          </button>
           {/* </input> */}
         </div>
-      ) : showDelete && isEditing ? (
-
-      <form className="flex text-left group relative focus: text-slate-400 hover:text-blue-500"
-        onSubmit={handleChange}>
-        <input
-          type="text"
-          value={newTitle}
-          onChange={handleChange}
-          className=" flex gap-2 flex-col w-1rem"
-        />
-        <div>
-          <button
-            className="flex text-left"
-            onClick={(e) =>
-              setNewTitle(e.target.title.value)
-            }
-          >
-            Save
-          </button>
-        </div>
-      </form>
-      ) : null}
-
+      ) : isEditing ? (
+        <form className="flex text-left group relative focus: text-slate-400 hover:text-blue-500"
+          onSubmit={handleChange}>
+          <input
+            type="text"
+            value={newTitle}
+            onChange={handleEditClick}
+            className=" flex gap-2 flex-col w-1rem"
+          />
+          <div>
+            <button
+              className="flex text-left"
+              onClick={(e) =>
+                setNewTitle(e.target.value)
+              }
+            >
+              Save
+            </button>
+          </div>
+        </form>
+      ) : showDelete } 
       {showDelete ? (
         <div className="group relative focus: text-slate-400 hover:text-red-500">
           <button
@@ -235,10 +231,10 @@ export default function TodoItem({ task }: TodoItemProps) {
 //     if (typeof arguments[3] === 'function') {
 //       error("State updates from the useState() and useReducer() Hooks don't support the " + 'second callback argument. To execute a side effect after ' + 'rendering, declare it in the component body with useEffect().');
 
-  // const [todoToEdit, setTodoToEdit] = useState(null);
-  // const [showSaveButton, setShowSaveButton] = useState(false);
+// const [todoToEdit, setTodoToEdit] = useState(null);
+// const [showSaveButton, setShowSaveButton] = useState(false);
 
-  // function handleEditClick(todo: any) {
+// function handleEditClick(todo: any) {
 //   setShowSaveButton(true)
 //   setTodoToEdit(todo);
 // }
