@@ -20,11 +20,13 @@ export default function TodoItem({ task }: TodoItemProps) {
   const [showDelete, setShowDelete] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [isEditing, setIsEditing] = useState(false);
+  const [showSaveButton, setShowSaveButton] = useState(false);
   const dispatch = useContext(TasksDispatchContext);
   const router = useRouter();
 
   function handleEditClick() {
     setIsEditing(true)
+    setShowSaveButton(true)
 
   }
 
@@ -32,7 +34,7 @@ export default function TodoItem({ task }: TodoItemProps) {
   function handleChange(e: React.FormEvent) {
     e.preventDefault();
     //@ts-ignore
-    // setNewTitle(e.target.title.value);
+    setNewTitle(e.target.value);
     setIsEditing(false);
     //@ts-ignore
     dispatch({
@@ -76,20 +78,21 @@ export default function TodoItem({ task }: TodoItemProps) {
         {task.title}
       </label>
 
-      {/* <label htmlFor={}> {} </label> */}
+      {/* <label for=> {} </label> */}
 
-      {showDelete && isEditing ? (
+      
         <div className="group relative focus:text-slate-400 hover:  text-blue-500">
           <button
-            onClick={handleEditClick}
+            name="Edit"
+            onClick={() => {handleEditClick}}
           >
             Edit
           </button>
           {/* </input> */}
         </div>
-      ) : isEditing ? (
-        <form className="flex text-left group relative focus: text-slate-400 hover:text-blue-500"
-          onSubmit={handleChange}>
+
+        <form onSubmit={handleChange}
+          className="flex text-left group relative focus: text-slate-400 hover:text-blue-500">
           <input
             type="text"
             value={newTitle}
@@ -107,8 +110,8 @@ export default function TodoItem({ task }: TodoItemProps) {
             </button>
           </div>
         </form>
-      ) : showDelete } 
-      {showDelete ? (
+    
+
         <div className="group relative focus: text-slate-400 hover:text-red-500">
           <button
             onClick={() =>
@@ -122,7 +125,6 @@ export default function TodoItem({ task }: TodoItemProps) {
             Delete
           </button>
         </div>
-      ) : null}
     </li>
   );
 }
