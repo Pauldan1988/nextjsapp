@@ -43,10 +43,10 @@ export default function TodoItem({ task }: TodoItemProps) {
       type: "edited",
       task: {
         ...task,
-        text: title,
+        title: title,
       }
+
     })
-    router.push("/");
   }
   // console.log(handleChange)
   console.log("handleEditClick", handleEditClick)
@@ -96,21 +96,25 @@ export default function TodoItem({ task }: TodoItemProps) {
           >
             Edit
           </button>
-        {/* </label> */}
-        {/* </input> */}
       </div>
+
+      {/* <label
+        htmlFor={task.id}
+      >
+        {task.title}
+      </label> */}
 
       <form onSubmit={handleChange}
         className="flex text-left group relative focus: text-slate-400 hover:text-blue-500">
-        <label>
           <input
             id={task.id}
             type="text"
             name="title"
             className=" flex gap-2 flex-col w-1rem"
-            onChange={handleEditClick}
+            onChange={(e) => 
+              setIsEditing(false)
+            }
           />
-        </label>
         <div>
           <button
             type="submit"
