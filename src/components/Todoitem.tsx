@@ -28,7 +28,6 @@ export default function TodoItem({ task }: TodoItemProps) {
     e.preventDefault();
     setIsEditing(true)
     setShowSaveButton(true)
-
   }
 
 
@@ -45,105 +44,101 @@ export default function TodoItem({ task }: TodoItemProps) {
         ...task,
         title: title,
       }
-
     })
   }
   // console.log(handleChange)
   console.log("handleEditClick", handleEditClick)
   return (
 
-    // <li
-    //   onMouseEnter={() => setShowDelete(true)}
-    //   onMouseLeave={() => setShowDelete(false)}
-    //   className="flex gap-1 items-center"
-    // >
-    <div className="flex">
-      <input
-        id={task.id}
-        type="checkbox"
-        className="cursor-pointer peer"
-        checked={task.complete}
-        onChange={(e) =>
-          //@ts-ignore
-          dispatch({
-            type: "changed",
-            task: {
-              ...task,
-              complete: e.target.checked,
-            },
-          })
-        }
-      />
-
-      <label
-        htmlFor={task.id}
-        className="group relative cursor-pointer peer-checked:line-through"
-      >
-        {task.title}
-      </label>
-
-
-
-
-      <div className="group relative focus:  text-slate-400 hover:text-blue-500">
-        {/* <label
-          htmlFor={task.title}
-        >
-          {task.title} */}
-          <button
-            name="Edit"
-            onClick={ handleEditClick }
-          >
-            Edit
-          </button>
-      </div>
-
-      {/* <label
-        htmlFor={task.id}
-      >
-        {task.title}
-      </label> */}
-
-      <form onSubmit={handleChange}
-        className="flex text-left group relative focus: text-slate-400 hover:text-blue-500">
-          <input
-            id={task.id}
-            type="text"
-            name="title"
-            className=" flex gap-2 flex-col w-1rem"
-            onChange={(e) => 
-              setIsEditing(false)
-            }
-          />
-        <div>
-          <button
-            type="submit"
-            className="flex text-left"
-            onClick={(e) =>
-              setNewTitle(e.target.value)
-            }
-          >
-            Save
-          </button>
-        </div>
-      </form>
-
-
-      <div className="group relative focus: text-slate-400 hover:text-red-500">
-        <button
-          onClick={() =>
+    <li
+      onMouseOver={() => setShowDelete(true)}
+      onMouseOverCapture={() => setShowDelete(false)}
+      className="flex gap-1 items-center"
+    >
+      <div className="flex space-x-1">
+        <input
+          id={task.id}
+          type="checkbox"
+          className="cursor-pointer peer"
+          checked={task.complete}
+          onChange={(e) =>
             //@ts-ignore
             dispatch({
-              type: "deleted",
-              id: task.id,
+              type: "changed",
+              task: {
+                ...task,
+                complete: e.target.checked,
+              },
             })
           }
+        />
+
+        <label
+          htmlFor={task.id}
+          className="group relative cursor-pointer peer-checked:line-through"
         >
-          Delete
-        </button>
+          {task.title}
+        </label>
+
+        <label
+
+        >
+
+        </label>
+
+        {isEditing ? (
+          <div className="group relative focus: text-slate-400 hover:text-blue-500">
+            <button
+              name="Edit"
+              onClick={handleEditClick}
+            >
+              Edit 
+            </button>
+          </div>
+        ) : showDelete ? (
+          <form onSubmit={handleChange}
+            className="flex text-left group relative focus: text-slate-400 hover:text-blue-500">
+            <input
+              id={task.id}
+              type="text"
+              name="title"
+              className=" flex gap-2 flex-col w-1rem"
+              onChange={(e) =>
+                setIsEditing(false)
+              }
+            />
+            <div>
+              <button
+                type="submit"
+                className="flex text-left"
+                onClick={(e) =>
+                  setNewTitle(e.target.value)
+                }
+              >
+                Save
+              </button>
+            </div>
+          </form>
+        ) : isEditing}
+
+
+        {showDelete ? (
+          <div className="group relative focus: text-slate-400 hover:text-red-500">
+            <button
+              onClick={() =>
+                //@ts-ignore
+                dispatch({
+                  type: "deleted",
+                  id: task.id,
+                })
+              }
+            >
+              Delete
+            </button>
+          </div>
+        ) : null}
       </div>
-    </div>
-    // </li>
+    </li>
   );
 }
 
@@ -182,11 +177,11 @@ export default function TodoItem({ task }: TodoItemProps) {
 
 //// -New state object called newTitle
 
-// -Create handle change function(Takes in FormEvent, Sets newTitle State). Goes in the new input field on Todoitem.tsx
+//// -Create handle change function(Takes in FormEvent, Sets newTitle State). Goes in the new input field on Todoitem.tsx
 
 // -Dispatching a resolver update title, which will hit API endpoint, which will mutate Prisma database
 
-// -Make the necessary prisma operations and then send back a good response
+//// -Make the necessary prisma operations and then send back a good response
 
 
 
@@ -210,7 +205,7 @@ export default function TodoItem({ task }: TodoItemProps) {
 
 
 
-// if(isEditing) {
+{/* // if(isEditing) {
 //   return (
 //     <form onSubmit={handleChange}>
 //       <input
@@ -244,9 +239,9 @@ export default function TodoItem({ task }: TodoItemProps) {
 //       </div>
 //     </form>
 //   )
-// }
+// } */}
 
-//  dispatchSetState(fiber, queue, action) {
+{/* //  dispatchSetState(fiber, queue, action) {
 //   {
 //     if (typeof arguments[3] === 'function') {
 //       error("State updates from the useState() and useReducer() Hooks don't support the " + 'second callback argument. To execute a side effect after ' + 'rendering, declare it in the component body with useEffect().');
@@ -257,4 +252,10 @@ export default function TodoItem({ task }: TodoItemProps) {
 // function handleEditClick(todo: any) {
 //   setShowSaveButton(true)
 //   setTodoToEdit(todo);
-// }
+// } */}
+
+{/* <label
+        htmlFor={task.id}
+      >
+        {task.title}
+      </label> */}
