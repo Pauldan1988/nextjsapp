@@ -24,7 +24,8 @@ export default function TodoItem({ task }: TodoItemProps) {
   const dispatch = useContext(TasksDispatchContext);
   const router = useRouter();
 
-  function handleEditClick() {
+  function handleEditClick(e: React.FormEvent) {
+    e.preventDefault();
     setIsEditing(true)
     setShowSaveButton(true)
 
@@ -33,27 +34,30 @@ export default function TodoItem({ task }: TodoItemProps) {
 
   function handleChange(e: React.FormEvent) {
     e.preventDefault();
+    const title = e.target.title.value;
     //@ts-ignore
-    setNewTitle(e.target.value);
+    setNewTitle(e.target.title.value);
     setIsEditing(false);
     //@ts-ignore
     dispatch({
       type: "edited",
       task: {
         ...task,
-        title: e.target.value
+        text: title,
       }
     })
+    router.push("/");
   }
   // console.log(handleChange)
   console.log("handleEditClick", handleEditClick)
   return (
 
-    <li
-      onMouseEnter={() => setShowDelete(true)}
-      onMouseLeave={() => setShowDelete(false)}
-      className="flex gap-1 items-center"
-    >
+    // <li
+    //   onMouseEnter={() => setShowDelete(true)}
+    //   onMouseLeave={() => setShowDelete(false)}
+    //   className="flex gap-1 items-center"
+    // >
+    <div className="flex">
       <input
         id={task.id}
         type="checkbox"
@@ -78,54 +82,64 @@ export default function TodoItem({ task }: TodoItemProps) {
         {task.title}
       </label>
 
-      {/* <label for=> {} </label> */}
 
-      
-        <div className="group relative focus:text-slate-400 hover:  text-blue-500">
+
+
+      <div className="group relative focus:  text-slate-400 hover:text-blue-500">
+        {/* <label
+          htmlFor={task.title}
+        >
+          {task.title} */}
           <button
             name="Edit"
-            onClick={() => {handleEditClick}}
+            onClick={ handleEditClick }
           >
             Edit
           </button>
-          {/* </input> */}
-        </div>
+        {/* </label> */}
+        {/* </input> */}
+      </div>
 
-        <form onSubmit={handleChange}
-          className="flex text-left group relative focus: text-slate-400 hover:text-blue-500">
+      <form onSubmit={handleChange}
+        className="flex text-left group relative focus: text-slate-400 hover:text-blue-500">
+        <label>
           <input
+            id={task.id}
             type="text"
-            value={newTitle}
-            onChange={handleEditClick}
+            name="title"
             className=" flex gap-2 flex-col w-1rem"
+            onChange={handleEditClick}
           />
-          <div>
-            <button
-              className="flex text-left"
-              onClick={(e) =>
-                setNewTitle(e.target.value)
-              }
-            >
-              Save
-            </button>
-          </div>
-        </form>
-    
-
-        <div className="group relative focus: text-slate-400 hover:text-red-500">
+        </label>
+        <div>
           <button
-            onClick={() =>
-              //@ts-ignore
-              dispatch({
-                type: "deleted",
-                id: task.id,
-              })
+            type="submit"
+            className="flex text-left"
+            onClick={(e) =>
+              setNewTitle(e.target.value)
             }
           >
-            Delete
+            Save
           </button>
         </div>
-    </li>
+      </form>
+
+
+      <div className="group relative focus: text-slate-400 hover:text-red-500">
+        <button
+          onClick={() =>
+            //@ts-ignore
+            dispatch({
+              type: "deleted",
+              id: task.id,
+            })
+          }
+        >
+          Delete
+        </button>
+      </div>
+    </div>
+    // </li>
   );
 }
 

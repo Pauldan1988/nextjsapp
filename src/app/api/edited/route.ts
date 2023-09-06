@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/db";
 
-export async function PUT(req: Request) {
+export async function PUT(req: Request, { params }: { params: { id: string }}) {
     const { id, title } = await req.json()
 
     const editedTask = await prisma.todo.update({
