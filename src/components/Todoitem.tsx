@@ -47,12 +47,12 @@ export default function TodoItem({ task }: TodoItemProps) {
     })
   }
   // console.log(handleChange)
-  console.log("handleEditClick", handleEditClick)
+  // console.log("handleEditClick", handleEditClick)
   return (
 
     <li
-      onMouseOver={() => setShowDelete(true)}
-      onMouseOverCapture={() => setShowDelete(false)}
+      onMouseEnter={() => setShowDelete(true)}
+      onMouseLeave={() => setShowDelete(false)}
       className="flex gap-1 items-center"
     >
       <div className="flex space-x-1">
@@ -80,34 +80,19 @@ export default function TodoItem({ task }: TodoItemProps) {
           {task.title}
         </label>
 
-        <label
-
-        >
-
-        </label>
-
-        {isEditing ? (
-          <div className="group relative focus: text-slate-400 hover:text-blue-500">
-            <button
-              name="Edit"
-              onClick={handleEditClick}
-            >
-              Edit 
-            </button>
-          </div>
-        ) : showDelete ? (
-          <form onSubmit={handleChange}
-            className="flex text-left group relative focus: text-slate-400 hover:text-blue-500">
-            <input
-              id={task.id}
-              type="text"
-              name="title"
-              className=" flex gap-2 flex-col w-1rem"
-              onChange={(e) =>
-                setIsEditing(false)
-              }
-            />
-            <div>
+        <form onSubmit={handleChange} className="flex space-x-1">
+          <input
+            id={task.id}
+            type="text"
+            name="title"
+            placeholder="Edit To-Do"
+            className=" flex gap-2 flex-col w-1rem"
+            onChange={(e) =>
+              setIsEditing(false)
+            }
+          />
+          {showDelete || isEditing ? (
+            <div className="group relative focus: text-slate-400 hover:text-blue-500">
               <button
                 type="submit"
                 className="flex text-left"
@@ -118,10 +103,19 @@ export default function TodoItem({ task }: TodoItemProps) {
                 Save
               </button>
             </div>
-          </form>
-        ) : isEditing}
+          ) : isEditing ? (
+            <div className="group relative focus: text-slate-400 hover:text-blue-500">
+              {task.id}
+              <button
+                name="Edit"
+                onClick={handleEditClick}
+              >
+                Edit
+              </button>
+            </div>
+          ) : isEditing || showDelete}
 
-
+        </form>
         {showDelete ? (
           <div className="group relative focus: text-slate-400 hover:text-red-500">
             <button
@@ -138,6 +132,7 @@ export default function TodoItem({ task }: TodoItemProps) {
           </div>
         ) : null}
       </div>
+
     </li>
   );
 }
