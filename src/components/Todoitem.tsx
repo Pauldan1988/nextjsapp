@@ -7,6 +7,13 @@ import { useRouter } from "next/navigation";
 import { GenericHTMLFormElement } from "axios";
 //*useState is a react hook that allows you to use state in a functional component
 
+declare global {
+  interface EventTarget {
+    title: any;
+    value: any;
+  }
+}
+
 type TodoItemProps = {
   task: {
     id: string;
