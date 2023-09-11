@@ -19,6 +19,7 @@ export function tasksReducer(tasks: any[], action: any) {
       }];
     }
     case 'getData': {
+      axios.get('http://localhost:3000/api/getall')
       return action.payload.data
     }
     case 'changed': {
