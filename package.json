@@ -4,8 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "yarn dev",
-    "build": "yarn run build",
-    "start": "yarn start",
+    "build": "yarn build",
     "lint": "yarn lint"
   },
   "dependencies": {
@@ -22,7 +21,8 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "tailwindcss": "3.3.3",
-    "typescript": "5.1.6"
+    "typescript": "5.1.6",
+    "vercel": "^32.2.0"
   },
   "devDependencies": {
     "daisyui": "^3.6.4",
