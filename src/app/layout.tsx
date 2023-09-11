@@ -1,18 +1,9 @@
 "use client"
 
 import './globals.css'
-import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import { TasksContext, TasksDispatchContext, tasksReducer } from '../components/TasksContext'
 import { useReducer, useEffect, useState } from 'react'
 import axios from 'axios'
-
-
-const inter = Inter({ subsets: ['latin'] })
-
-export const metadata: Metadata = {
-  title: 'Todo app',
-}
 
 export default function RootLayout({
   children,
