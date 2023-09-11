@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "yarn dev",
-    "build": "yarn build",
-    "lint": "yarn lint"
+    "dev": "next dev",
+    "build": "next build",
+    "lint": "next lint"
   },
   "dependencies": {
     "@prisma/client": "^5.1.1",
