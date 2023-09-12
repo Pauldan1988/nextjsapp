@@ -1,13 +1,15 @@
+import { VercelRequest, VercelResponse } from '@vercel/node';
 import { sql } from '@vercel/postgres';
-import { NextResponse } from 'next/server';
  
-export async function GET(req: Request) {
+export default async function handler(
+  request: VercelRequest,
+  response: VercelResponse,
+) {
   try {
     const result =
-      await sql`SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'todo')`;
-    return NextResponse.json({ result }, { status: 200 });
+      await sql`SELECT EXISTS (SELECT FROM information_schema.tables WHERE table_name = 'todo');`;
+    return response.status(200).json({ result });
   } catch (error) {
-    console.log(error)
-    return NextResponse.json({ error }, { status: 500 });
+    return response.status(500).json({ error });
   }
 }
