@@ -5,11 +5,13 @@ import TodoItem from '@/components/Todoitem'
 import { useContext, useState } from 'react'
 import { TasksContext } from '@/components/TasksContext'
 import { TasksDispatchContext } from '../components/TasksContext'
+import { tasksReducer } from '@/components/TasksContext' 
 
 
 export default function Home() {
+  // const todoComplete = tasksReducer(action.task, tasks.complete)
   const todos = useContext(TasksContext) //* Calling database in a react component. Use Effect, Use State, onChange event listeners cannot be used otherwise you cannot query database from a react component
-  console.log(todos)
+  
 
   return (
   <>
